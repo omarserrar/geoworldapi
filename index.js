@@ -112,8 +112,23 @@ function getCountryFromRequest(req) {
 
 // If you want to keep a stub for local testing instead of real IP lookup:
 function getUserCountry(_req) {
-  const countries = ['FR', 'US', 'DE', 'IT', 'ES', 'GB', 'CA', 'JP', 'AU', 'BR'];
-  return countries[Math.floor(Math.random() * countries.length)];
+  const ip =
+    _req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+    _req.socket?.remoteAddress ||
+    null;
+
+  if (
+    !ip ||
+    ip.startsWith("192.") ||
+    ip.startsWith("127.") ||
+    ip === "::1" ||
+    ip === "localhost"
+  ) {
+    const countries = ['FR', 'US', 'DE', 'IT', 'ES', 'GB', 'CA', 'JP', 'AU', 'BR'];
+    return countries[Math.floor(Math.random() * countries.length)];
+  }
+  return getCountryFromRequest(_req);
+  
 }
 
 // ---- Period helpers ----
