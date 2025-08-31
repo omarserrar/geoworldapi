@@ -436,7 +436,7 @@ app.post("/api/users", asyncHandler(async (req, res) => {
       .json({ error: "username must be between 2 and 20 characters after trimming" });
   }
 
-  const country = getUserCountry(req); // or use getCountryFromRequest(req) in prod
+  const country = 'FR'; // or use getCountryFromRequest(req) in prod
   console.log(`User ${userId} from country: ${country}`);
   await pool.query(
     `insert into users (user_id, username, country, created_at, updated_at)
